@@ -1,0 +1,44 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+div#price {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0;
+    border: 1px solid #eee;
+    font-weight: bold;
+}
+
+#price p {
+    margin: 0;
+}
+
+ul.attr_list {
+    display: block;
+    padding: 10px;
+    list-style: none;
+    text-align: center;
+}
+
+ul.attr_list li {
+    display: inline-block;
+    background: #333;
+    color: #fff;
+}
+
+ul.attr_list li a {
+    color: #fff;
+    padding: 10px;
+}
+
+.alert.alert-danger ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
