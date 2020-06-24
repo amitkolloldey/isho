@@ -1,3 +1,4 @@
+
 @extends('admin.layouts.app')
 @section('title') Stocks @endsection
 @section('styles')
@@ -12,9 +13,11 @@
 
         </div>
         <div class="action_buttons mb-2">
-            <!-- Button trigger modal -->
             <a href="{{route('stock_create')}}" class="btn btn-primary">
                 Add New
+            </a>
+            <a class="btn btn-success" href="/admin/stock/search/download">
+                Download Stock
             </a>
         </div>
         <div class="filter row">
@@ -34,29 +37,34 @@
 
         </div>
         <div id="search_data"></div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Product Sku</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Updated On</th>
-                <th scope="col">Action</th>
-            </tr>
-            </thead>
-            <tbody id="table_data">
+        <div id="stock_print">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Product Sku</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Updated On</th>
+                    <th scope="col" class="action">Action</th>
+                </tr>
+                </thead>
+                <tbody id="table_data">
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 @stop
 
 @section('scripts')
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable"></script>
     <script>
+
         function search_stock() {
             $('#loader').show();
             const sku = document.getElementById('sku').value
             const date = document.getElementById('datepicker').value
-            axios.get('/api/stock/search/?sku='+sku+'&date='+date, {
+            axios.get('/api/stock/search/?sku=' + sku + '&date=' + date, {
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + '{{session()->get('access_token')}}'
@@ -66,21 +74,21 @@
                     $('#loader').hide();
                     console.log(response);
                     $('#table_data').empty()
-                    if(response.data.stocks.length){
+                    if (response.data.stocks.length) {
                         $.each(response.data.stocks, function (index, value) {
                             $('#table_data').append('<tr>' +
-                                '<td>' +value.product.sku + '</td>' +
+                                '<td>' + value.product.sku + '</td>' +
                                 '<td>' + value.quantity + '</td>' +
                                 '<td>' + value.updated_at + '</td>' +
                                 '<td><a href="/admin/stock/edit/' + value.id + '">Edit</a>/<a href="#" onclick="event.preventDefault(); destroy(' + value.id + ')">Delete</a></td>' +
                                 '</tr>');
                         });
-                    }else{
+                    } else {
                         $('#table_data').append('<tr><td> No Result Found!</td></tr>');
-                        if(response.data.validation.sku){
-                            $('#error').append('<p class="alert alert-danger ">'+response.data.validation.sku+'</p>');
-                        }else if(response.data.validation.date){
-                            $('#error').append('<p class="alert alert-danger ">'+response.data.validation.date+'</p>');
+                        if (response.data.validation.sku) {
+                            $('#error').append('<p class="alert alert-danger ">' + response.data.validation.sku + '</p>');
+                        } else if (response.data.validation.date) {
+                            $('#error').append('<p class="alert alert-danger ">' + response.data.validation.date + '</p>');
                         }
                     }
                 })
@@ -125,7 +133,7 @@
                             '<td>' + value.product.sku + '</td>' +
                             '<td>' + value.quantity + '</td>' +
                             '<td>' + value.updated_at + '</td>' +
-                            '<td><a href="/admin/stock/edit/' + value.id + '">Edit</a>/<a href="#" onclick="event.preventDefault(); destroy(' + value.id + ')">Delete</a></td>' +
+                            '<td class="action"><a href="/admin/stock/edit/' + value.id + '">Edit</a>/<a href="#" onclick="event.preventDefault(); destroy(' + value.id + ')">Delete</a></td>' +
                             '</tr>');
                     });
                     $('#loader').hide();
@@ -136,6 +144,20 @@
                     $('#error').append('<p class="alert alert-danger ">' + error + '</p>');
                 });
         };
+
+        function print_stock() {
+            $('.action').hide()
+            var doc = new jsPDF();
+            var specialElementHandlers = {
+                '#stock_print': function (element, renderer) {
+                    return true;
+                }
+            };
+            doc.fromHTML($('#stock_print').html(),{
+                'elementHandlers': specialElementHandlers
+            });
+            doc.save('stock.pdf');
+        }
     </script>
 
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
@@ -144,4 +166,5 @@
             uiLibrary: 'bootstrap4'
         });
     </script>
+
 @stop

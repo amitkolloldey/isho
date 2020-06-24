@@ -40,6 +40,17 @@ if (!function_exists('get_sku_by_product_id')) {
     }
 }
 
+if (!function_exists('get_sku_by_product_id')) {
+    function get_sku_by_product_id($id)
+    {
+        $product = Product::where('id', $id)->get('sku')->first();
+        if (isset($product)) {
+            return $product->sku;
+        }
+        return null;
+    }
+}
+
 
 if (!function_exists('get_product_attribute_value')) {
     function get_product_attribute_value($id)

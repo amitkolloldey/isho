@@ -43,10 +43,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','verified']], functio
     Route::get('/attributes', 'AttributeController@index')->name('attributes');
     Route::get('/attribute/create', 'AttributeController@create')->name('attribute_create');
     Route::get('/attribute/edit/{id}', 'AttributeController@edit')->name('attribute_edit');
+
+    Route::get('/stock/search/download', 'StockController@stockDownload');
 });
 
 Route::get('admin/login', 'AuthController@showLogin')->name('showLogin');
 Route::get('admin/register', 'AuthController@showRegister')->name('showRegister');
+
+// Defining On Web Routes Because Session can not be access via api
+Route::get('/api/stocks', 'StockController@stocks')->middleware(['auth','verified']);
+Route::get('/api/stock/search', 'StockController@search')->middleware(['auth','verified']);
+Route::get('/api/stock/search/download', 'StockController@stockDownload')->middleware(['auth','verified']);
 
 Route::post('/api/admin/logout', 'AuthController@logout')->name('logout');
 Route::post('/api/admin/login', 'AuthController@login')->name('admin_login');

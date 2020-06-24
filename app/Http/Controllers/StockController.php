@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Stock;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -150,6 +151,11 @@ class StockController extends Controller
      */
     public function search(Request $request)
     {
+        if ( session()->has('stocks')){
+             session()->forget('stocks');
+             session()->save();
+        }
+
         // Validation
         $validator = Validator::make($request->all(), [
             'date' => 'required',
@@ -167,8 +173,18 @@ class StockController extends Controller
             ->whereDate('updated_at', '=', $date)
             ->get();
 
+         session()->put('stocks', $stocks);
+         session()->save();
+
         return response([
             'stocks' => $stocks,
         ]);
+    }
+
+    public function stockDownload(Request $request)
+    {
+        $pdf = PDF::loadView('admin.pages.stock_download'
+        );
+        return $pdf->download('invoice.pdf');
     }
 }

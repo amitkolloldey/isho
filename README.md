@@ -13,15 +13,11 @@ Then
 
 Run The Following commands one By One
 
-`composer require laravel/ui`
-
-`php artisan ui bootstrap --auth`
+`composer install`
 
 `npm install`
 
 `npm run dev`
-
-`composer require laravel/passport`
 
 Copy the env.example to .env
 
