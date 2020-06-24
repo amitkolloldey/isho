@@ -51,7 +51,6 @@ Route::get('admin/login', 'AuthController@showLogin')->name('showLogin');
 Route::get('admin/register', 'AuthController@showRegister')->name('showRegister');
 
 // Defining On Web Routes Because Session can not be access via api
-Route::get('/api/stocks', 'StockController@stocks')->middleware(['auth','verified']);
 Route::get('/api/stock/search', 'StockController@search')->middleware(['auth','verified']);
 Route::get('/api/stock/search/download', 'StockController@stockDownload')->middleware(['auth','verified']);
 

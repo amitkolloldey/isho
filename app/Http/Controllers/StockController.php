@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\Stock;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
@@ -62,27 +63,20 @@ class StockController extends Controller
                 'validation' => $validator->errors()
             ]);
         }
-
+        $product_id = get_product_by_sku($request->sku);
         // Creating The Stock
         $stock = Stock::create([
             'quantity' => $request->quantity,
-            'product_id' => get_product_by_sku($request->sku)
+            'product_id' => $product_id
         ]);
+
+        $product = Product::findOrFail($product_id);
+
+        $stock->product()->associate($product);
 
         return response([
             'success' => 'Successfully Added'
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -122,6 +116,13 @@ class StockController extends Controller
         $stock->update([
             'quantity' => $request->quantity,
         ]);
+
+        $product_id = $stock->product_id;
+
+        $product = Product::findOrFail($product_id);
+
+        $stock->product()->associate($product);
+
         return response([
             'success' => 'Successfully Updated'
         ]);
@@ -181,10 +182,14 @@ class StockController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function stockDownload(Request $request)
     {
         $pdf = PDF::loadView('admin.pages.stock_download'
         );
-        return $pdf->download('invoice.pdf');
+        return $pdf->download('stock_result.pdf');
     }
 }

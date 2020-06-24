@@ -1,6 +1,7 @@
 <?php
 
 use App\Product;
+use App\Stock;
 use Faker\Factory as FactoryAlias;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -32,11 +33,14 @@ class ProductsTableSeeder extends Seeder
                 'updated_at' => $faker->dateTime('now', $timezone = null)
             ]);
 
-            $stock = $product->stocks()->create([
+            $stock = Stock::create([
                 'product_id' => $product->id,
                 'quantity' => $faker->numberBetween($min = 50, $max = 100),
-                'created_at' => $faker->dateTime('now', $timezone = null),
             ]);
+
+            $stock->product()->associate($product);
+
+            $stock->save();
 
             $attribute_product = $product->attributes()->create([
                 'product_id' => $product->id,

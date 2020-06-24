@@ -75,7 +75,7 @@
                         <input type="hidden" name="product_id" value="{{$product->id}}">
                         <input type="hidden" name="attribute_name" value="{{get_attribute_name_by_id(get_attribute_value_by_id(session()->get('order_items')['attribute_value_id'])->attribute_id)['name']}}">
                         <input type="hidden" name="attribute_value" value="{{get_attribute_value_by_id(session()->get('order_items')['attribute_value_id'])->value}}">
-                        <input type="hidden" name="currency" value="{{session()->get('currency')}}">
+                        <input type="hidden" name="currency" value="{{session()->has('currency') ? session()->get('currency') : "BDT"}}">
                         <input type="hidden" name="quantity" value="{{session()->get('order_items')['quantity']}}">
                         <input type="hidden" name="total_price" value="{{session()->get('order_items')['total_price']}}">
                        <button class="btn-primary btn">Complete Order</button>

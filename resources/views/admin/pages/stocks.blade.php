@@ -129,12 +129,14 @@
             })
                 .then(function (response) {
                     $.each(response.data.stocks, function (index, value) {
-                        $('#table_data').append('<tr>' +
-                            '<td>' + value.product.sku + '</td>' +
-                            '<td>' + value.quantity + '</td>' +
-                            '<td>' + value.updated_at + '</td>' +
-                            '<td class="action"><a href="/admin/stock/edit/' + value.id + '">Edit</a>/<a href="#" onclick="event.preventDefault(); destroy(' + value.id + ')">Delete</a></td>' +
-                            '</tr>');
+                        if(value.product){
+                            $('#table_data').append('<tr>' +
+                                '<td>' + value.product.sku + '</td>' +
+                                '<td>' + value.quantity + '</td>' +
+                                '<td>' + value.updated_at + '</td>' +
+                                '<td class="action"><a href="/admin/stock/edit/' + value.id + '">Edit</a>/<a href="#" onclick="event.preventDefault(); destroy(' + value.id + ')">Delete</a></td>' +
+                                '</tr>');
+                        }
                     });
                     $('#loader').hide();
                     console.log(response);

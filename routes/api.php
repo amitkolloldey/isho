@@ -33,12 +33,10 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::get('/orders', 'OrderController@orders');
     Route::delete('/order/delete/{id}', 'OrderController@destroy')->name('order_delete');
 
-//    Route::get('/stocks', 'StockController@stocks');
+    Route::get('/stocks', 'StockController@stocks');
     Route::post('/stock/store', 'StockController@store')->name('stock_store');
     Route::put('/stock/update/{id}', 'StockController@update')->name('stock_update');
     Route::delete('/stock/delete/{id}', 'StockController@destroy')->name('stock_delete');
-
-
 
     Route::post('/logout', 'AuthController@logout');
 });

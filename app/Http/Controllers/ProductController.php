@@ -93,6 +93,7 @@ class ProductController extends Controller
                 }
             }
         }
+
         $product->stocks()->create([
             'quantity' => $request->stock
         ]);
@@ -100,17 +101,6 @@ class ProductController extends Controller
         return response([
             'success' => 'Successfully Added'
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Product $product
-     * @return Response
-     */
-    public function show(Product $product)
-    {
-        //
     }
 
     /**
