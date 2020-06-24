@@ -15,7 +15,7 @@
                         @if(session()->has('rate') && session()->has('currency'))
                             <p>Price: {{$product->price * session()->get('rate')}} {{session()->get('currency')}}</p>
                         @else
-                            <p>Price: {{$product->price}}</p>
+                            <p>Price: {{$product->price}} BDT</p>
                         @endif
                     <p>SKU: {{$product->sku}}</p>
                 </div>

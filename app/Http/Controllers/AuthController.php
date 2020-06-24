@@ -102,6 +102,10 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return Application|ResponseFactory|Response
+     */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -124,8 +128,13 @@ class AuthController extends Controller
         return $user;
     }
 
+    /**
+     * @return RedirectResponse
+     */
     public function logout()
     {
+        session()->remove('access_token');
+
         auth()->user()->tokens->each(function ($token, $key) {
             $token->delete();
         });

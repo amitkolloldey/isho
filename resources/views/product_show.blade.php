@@ -54,7 +54,7 @@
                     @if(session()->has('rate') && session()->has('currency'))
                         <p>Price: {{$product->price * session()->get('rate')}} {{session()->get('currency')}}</p>
                     @else
-                        <p>Price: {{$product->price}}</p>
+                        <p>Price: {{$product->price}} BDT</p>
                     @endif
                     <p>SKU: {{$product->sku}}</p>
                     <p>{{$product->description}}</p>
@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
                             <input type="number" value="1" min="1"
-                                   max="{{$product->stocks->first()->quantity}}"
+                                   max="{{$product->stocks->last()->quantity}}"
                                    name="quantity" class="form-control" onchange="quantity_price()" id="quantity">
                         </div>
                         @foreach($product->attributes as $attribute)

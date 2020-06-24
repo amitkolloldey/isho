@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label for="stock">Available Quantity</label>
-                        <input type="number" class="form-control" id="stock" name="stock" value="{{$product->stocks()->orderBy('created_at', 'desc')->get()->first()->quantity}}">
+                        <input type="number" class="form-control" id="stock" name="stock" value="{{$product->stocks->last()->quantity}}">
                     </div>
                     <div class="form-group">
                         <label for="main_image">Main Image</label>

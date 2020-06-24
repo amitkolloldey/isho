@@ -225,6 +225,15 @@ class FrontController extends Controller
         $order->products()->create([
             'product_id' => $request->product_id,
         ]);
+
+        $product = Product::findOrFail($request->product_id);
+
+        $old_stock = $product->stocks->last()->quantity;
+
+        $product->stocks()->create([
+            'quantity' => $old_stock- ($order->quantity)
+        ]);
+
         session()->forget('order_items');
         session()->regenerate();
         return view('thankyou');

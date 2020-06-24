@@ -54,6 +54,6 @@ Route::get('admin/register', 'AuthController@showRegister')->name('showRegister'
 Route::get('/api/stock/search', 'StockController@search')->middleware(['auth','verified']);
 Route::get('/api/stock/search/download', 'StockController@stockDownload')->middleware(['auth','verified']);
 
-Route::post('/api/admin/logout', 'AuthController@logout')->name('logout');
+Route::post('/api/admin/logout', 'AuthController@logout')->name('logout')->middleware(['auth','verified']);
 Route::post('/api/admin/login', 'AuthController@login')->name('admin_login');
 Route::post('/api/admin/register', 'AuthController@register')->name('admin_register');
