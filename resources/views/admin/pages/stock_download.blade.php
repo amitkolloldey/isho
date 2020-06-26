@@ -8,11 +8,13 @@
     </thead>
     <tbody>
     @foreach(session()->get('stocks') as $stock)
-    <tr>
-        <td>{{get_sku_by_product_id($stock->product_id)}}</td>
-        <td>{{$stock->quantity}}</td>
-        <td>{{$stock->updated_at}}</td>
-    </tr>
+        @if(isset($stock->product))
+            <tr>
+                <td>{{ $stock->product->sku}}</td>
+                <td>{{$stock->quantity}}</td>
+                <td>{{$stock->updated_at}}</td>
+            </tr>
+        @endif
     @endforeach
     </tbody>
 </table>

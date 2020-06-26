@@ -63,6 +63,7 @@ class StockController extends Controller
                 'validation' => $validator->errors()
             ]);
         }
+
         $product_id = get_product_by_sku($request->sku);
         // Creating The Stock
         $stock = Stock::create([
